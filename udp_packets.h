@@ -8,8 +8,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "header_util.h"
-
 #define COMMAND_START 1
 #define COMMAND_STOP 2
 #define COMMAND_EMERGENCY_STOP 4
@@ -78,7 +76,8 @@ struct hyperloop_telemetry_packet {
 
 } __attribute__((packed));
 
-SIZE_CHECK_STRUCT(hyperloop_telemetry_packet, 34); // Hyperloop packet spec expects 34 byte telemetry packet.
+_Static_assert(sizeof(struct hyperloop_telemetry_packet) == 34,
+               "Hyperloop packet spec expects 34 byte telemetry packet.");
 
 bool is_info_packet_valid(struct info_packet *packet);
 
@@ -87,8 +86,6 @@ bool is_raw_info_packet_valid(void *raw_data);
 bool encode_info_packet(struct info_packet *packet, void *raw_data);
 
 bool decode_info_packet(void *raw_data, struct info_packet *packet);
-
-
 
 
 bool is_control_packet_valid(struct control_packet *packet);
@@ -105,11 +102,6 @@ bool is_hyperloop_telemetry_packet_valid(struct hyperloop_telemetry_packet *pack
 bool encode_hyperloop_telemetry_packet(struct hyperloop_telemetry_packet *packet, void *raw_data);
 
 bool decode_hyperloop_telemetry_packet(void *raw_data, struct hyperloop_telemetry_packet *packet);
-
-
-
-
-
 
 
 #endif //HYPERJACKETS_INTERCONNECTS_UDP_UDP_PACKETS_H
